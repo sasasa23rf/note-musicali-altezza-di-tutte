@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allenatore Note Musicali</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 90%;
+            max-width: 1200px;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .score-section {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .score-item {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        .staff-container {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .staff {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .staff-inner {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .staff-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: #333;
+            left: 0;
+        }
+
+        .staff-line:nth-child(1) { top: 20px; }
+        .staff-line:nth-child(2) { top: 50px; }
+        .staff-line:nth-child(3) { top: 80px; }
+        .staff-line:nth-child(4) { top: 110px; }
+        .staff-line:nth-child(5) { top: 140px; }
+
+        .treble-clef {
+            position: absolute;
+            left: 20px;
+            top: -30px;
+            font-size: 150px;
+            color: #333;
+            font-family: serif;
+            transform: scaleX(0.8);
+        }
+
+        .note {
+            position: absolute;
+            width: 30px;
+            height: 20px;
+            background: #333;
+            border-radius: 50%;
+            transform: rotate(-20deg);
+            left: 150px;
+            animation: noteAppear 0.5s ease-in-out;
+        }
+
+        @keyframes noteAppear {
+            0% { transform: rotate(-20deg) scale(0); opacity: 0; }
+            50% { transform: rotate(-20deg) scale(1.2); opacity: 0.7; }
+            100% { transform: rotate(-20deg) scale(1); opacity: 1; }
+        }
+
+        .ledger-line {
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background-color: #333;
+            left: 135px;
+        }
+
+        .note-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .note-btn {
+            background: linear-gradient(45deg, #56CCF2, #2F80ED);
+            color: white;
+            border: none;
+            padding: 20px 30px;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(47, 128, 237, 0.3);
+            min-width: 80px;
+        }
+
+        .note-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(47, 128, 237, 0.4);
+            background: linear-gradient(45deg, #2F80ED, #56CCF2);
+        }
+
+        .note-btn:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .feedback {
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            padding: 15px;
+            transition: all 0.5s ease;
+        }
+
+        .feedback.correct {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            animation: correctAnswer 0.6s ease-in-out;
+        }
+
+        .feedback.incorrect {
+            background: linear-gradient(45deg, #f44336, #d32f2f);
+            color: white;
+            animation: incorrectAnswer 0.6s ease-in-out;
+        }
+
+        @keyframes correctAnswer {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes incorrectAnswer {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 Allenatore Note Musicali 🎵</h1>
+        
+        <div class="score-section">
+            <div class="score-item">Corrette: <span id="correct-count">0</span></div>
+            <div class="score-item">Sbagliate: <span id="incorrect-count">0</span></div>
+        </div>
+
+        <div class="staff-container">
+            <div class="staff">
+                <div class="staff-inner">
+                    <div class="staff-line"></div>
+                    <div class="staff-line"></div>
+                    <div class="staff-line"></div>
+                    <div class="staff-line"></div>
+                    <div class="staff-line"></div>
+                    <div class="treble-clef">𝄞</div>
+                    <div id="current-note" class="note"></div>
+                    <div id="ledger-line-below" class="ledger-line hidden"></div>
+                    <div id="ledger-line-above" class="ledger-line hidden"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="note-buttons">
+            <button class="note-btn" data-note="DO">DO</button>
+            <button class="note-btn" data-note="RE">RE</button>
+            <button class="note-btn" data-note="MI">MI</button>
+            <button class="note-btn" data-note="FA">FA</button>
+            <button class="note-btn" data-note="SOL">SOL</button>
+            <button class="note-btn" data-note="LA">LA</button>
+            <button class="note-btn" data-note="SI">SI</button>
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+    </div>
+
+    <script>
+        class MusicNoteTrainer {
+            constructor() {
+                this.notes = [
+                    { name: 'DO', position: 150 },
+                    { name: 'RE', position: 144 },
+                    { name: 'MI', position: 133 },
+                    { name: 'FA', position: 116 },
+                    { name: 'SOL', position: 101 },
+                    { name: 'LA', position: 86 },
+                    { name: 'SI', position: 72 },
+                    { name: 'DO', position: 56 },
+                    { name: 'RE', position: 40 },
+                    { name: 'MI', position: 26 },
+                    { name: 'FA', position: 13 },
+                    { name: 'SOL', position: -3 },
+                    { name: 'LA', position: -12 }
+                ];
+                this.currentNote = null;
+                this.previousNote = null;
+                this.correctCount = 0;
+                this.incorrectCount = 0;
+                this.answered = false;
+                this.init();
+                this.generateNewNote();
+            }
+
+            init() {
+                document.querySelectorAll('.note-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        if (!this.answered) {
+                            this.checkAnswer(e.target.dataset.note);
+                        }
+                    });
+                });
+            }
+
+            showNote(note) {
+                const noteElement = document.getElementById('current-note');
+                const ledgerLineBelow = document.getElementById('ledger-line-below');
+                const ledgerLineAbove = document.getElementById('ledger-line-above');
+                ledgerLineBelow.classList.add('hidden');
+                ledgerLineAbove.classList.add('hidden');
+                noteElement.style.top = note.position + 'px';
+                if (note.position === 150) {
+                    ledgerLineBelow.style.top = (150 + 9) + 'px';
+                    ledgerLineBelow.classList.remove('hidden');
+                }
+                if (note.position === -12) {
+                    ledgerLineAbove.style.top = (-12 + 9) + 'px';
+                    ledgerLineAbove.classList.remove('hidden');
+                }
+            }
+
+            generateNewNote() {
+                this.answered = false;
+                document.getElementById('feedback').textContent = '';
+                document.getElementById('feedback').className = 'feedback';
+
+                let newNote;
+                do {
+                    const randomIndex = Math.floor(Math.random() * this.notes.length);
+                    newNote = this.notes[randomIndex];
+                } while (this.previousNote && newNote.name === this.previousNote.name && newNote.position === this.previousNote.position);
+
+                this.currentNote = newNote;
+                this.previousNote = newNote;
+                this.showNote(this.currentNote);
+                document.querySelectorAll('.note-btn').forEach(btn => {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                });
+            }
+
+            checkAnswer(selectedNote) {
+                if (this.answered) return;
+                this.answered = true;
+                const feedback = document.getElementById('feedback');
+                document.querySelectorAll('.note-btn').forEach(btn => {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.6';
+                });
+                if (selectedNote === this.currentNote.name) {
+                    this.correctCount++;
+                    document.getElementById('correct-count').textContent = this.correctCount;
+                    feedback.textContent = `🎉 Corretto! È ${this.currentNote.name}`;
+                    feedback.className = 'feedback correct';
+                } else {
+                    this.incorrectCount++;
+                    document.getElementById('incorrect-count').textContent = this.incorrectCount;
+                    feedback.textContent = `❌ Sbagliato! Era ${this.currentNote.name}`;
+                    feedback.className = 'feedback incorrect';
+                }
+                setTimeout(() => {
+                    this.generateNewNote();
+                }, 2000);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            window.musicTrainer = new MusicNoteTrainer();
+        });
+    </script>
+</body>
+</html>
