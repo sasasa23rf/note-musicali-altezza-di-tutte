@@ -4,246 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Allenatore Note Musicali</title>
+    <!-- Includo Tailwind CSS per uno stile moderno e responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Aggiungo un font più gradevole e animazioni personalizzate */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
+            font-family: 'Poppins', sans-serif;
         }
-
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            width: 90%;
-            max-width: 1200px;
-            height: 90%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            font-size: 3em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .score-section {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .score-item {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 15px;
-            font-size: 1.5em;
-            font-weight: bold;
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
-            animation: pulse 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
-        }
-
-        .staff-container {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            overflow: hidden;
-            margin: 20px 0;
-        }
-
-        .staff {
-            position: relative;
-            width: 90%;
-            max-width: 900px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .staff-inner {
-            position: relative;
-            width: 100%;
-            max-width: 700px;
-            height: 160px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .staff-line {
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background-color: #333;
-            left: 0;
-        }
-
-        .staff-line:nth-child(1) { top: 20px; }
-        .staff-line:nth-child(2) { top: 50px; }
-        .staff-line:nth-child(3) { top: 80px; }
-        .staff-line:nth-child(4) { top: 110px; }
-        .staff-line:nth-child(5) { top: 140px; }
-
-        .treble-clef {
-            position: absolute;
-            left: 20px;
-            top: -30px;
-            font-size: 150px;
-            color: #333;
-            font-family: serif;
-            transform: scaleX(0.8);
-        }
-
-        .note {
-            position: absolute;
-            width: 30px;
-            height: 20px;
-            background: #333;
-            border-radius: 50%;
-            transform: rotate(-20deg);
-            left: 150px;
-            animation: noteAppear 0.5s ease-in-out;
-        }
-
-        @keyframes noteAppear {
-            0% { transform: rotate(-20deg) scale(0); opacity: 0; }
-            50% { transform: rotate(-20deg) scale(1.2); opacity: 0.7; }
-            100% { transform: rotate(-20deg) scale(1); opacity: 1; }
-        }
-
-        .ledger-line {
-            position: absolute;
-            width: 50px;
-            height: 2px;
-            background-color: #333;
-            left: 135px;
-        }
-
-        .note-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .note-btn {
-            background: linear-gradient(45deg, #56CCF2, #2F80ED);
-            color: white;
-            border: none;
-            padding: 20px 30px;
-            font-size: 1.5em;
-            font-weight: bold;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(47, 128, 237, 0.3);
-            min-width: 80px;
-        }
-
-        .note-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 10px 25px rgba(47, 128, 237, 0.4);
-            background: linear-gradient(45deg, #2F80ED, #56CCF2);
-        }
-
-        .note-btn:active {
-            transform: translateY(-2px) scale(1.02);
-        }
-
-        .feedback {
-            text-align: center;
-            font-size: 1.8em;
-            font-weight: bold;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 15px;
-            padding: 15px;
-            transition: all 0.5s ease;
-        }
-
-        .feedback.correct {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-            color: white;
-            animation: correctAnswer 0.6s ease-in-out;
-        }
-
-        .feedback.incorrect {
-            background: linear-gradient(45deg, #f44336, #d32f2f);
-            color: white;
-            animation: incorrectAnswer 0.6s ease-in-out;
-        }
-
+        /* Animazioni per il feedback */
+        .correct-animation { animation: correctAnswer 0.6s ease-in-out; }
         @keyframes correctAnswer {
-            0% { transform: scale(1); }
+            0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
         }
-
+        .incorrect-animation { animation: incorrectAnswer 0.6s ease-in-out; }
         @keyframes incorrectAnswer {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px) rotate(-3deg); }
+            40% { transform: translateX(10px) rotate(3deg); }
+            60% { transform: translateX(-5px) rotate(-1deg); }
+            80% { transform: translateX(5px) rotate(1deg); }
         }
-
-        .hidden { display: none; }
+        .note-appear-animation { animation: noteAppear 0.5s ease-in-out; }
+        @keyframes noteAppear {
+            from { transform: scale(0) rotate(-20deg); opacity: 0; }
+            to { transform: scale(1) rotate(-20deg); opacity: 1; }
+        }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>🎵 Allenatore Note Musicali 🎵</h1>
+<body class="bg-gradient-to-br from-purple-600 to-indigo-800 flex items-center justify-center min-h-screen p-4">
+
+    <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-4 sm:p-6 lg:p-8 w-full max-w-7xl mx-auto flex flex-col h-[95vh]">
         
-        <div class="score-section">
-            <div class="score-item">Corrette: <span id="correct-count">0</span></div>
-            <div class="score-item">Sbagliate: <span id="incorrect-count">0</span></div>
+        <!-- Titolo -->
+        <h1 class="text-slate-800 text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-4">🎵 Allenatore Note Musicali 🎵</h1>
+        
+        <!-- Sezione Punteggio -->
+        <div class="flex justify-center gap-4 sm:gap-6 flex-wrap mb-4">
+            <div class="bg-green-500 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-xl text-lg sm:text-xl font-bold shadow-lg">Corrette: <span id="correct-count">0</span></div>
+            <div class="bg-red-500 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-xl text-lg sm:text-xl font-bold shadow-lg">Sbagliate: <span id="incorrect-count">0</span></div>
         </div>
 
-        <div class="staff-container">
-            <div class="staff">
-                <div class="staff-inner">
-                    <div class="staff-line"></div>
-                    <div class="staff-line"></div>
-                    <div class="staff-line"></div>
-                    <div class="staff-line"></div>
-                    <div class="staff-line"></div>
-                    <div class="treble-clef">𝄞</div>
-                    <div id="current-note" class="note"></div>
-                    <div id="ledger-line-below" class="ledger-line hidden"></div>
-                    <div id="ledger-line-above" class="ledger-line hidden"></div>
-                </div>
+        <!-- Contenitore del Pentagramma -->
+        <div class="flex-grow relative flex items-center justify-center bg-white/50 rounded-xl shadow-inner my-4 p-4 overflow-hidden">
+            <div id="staff" class="relative w-full max-w-4xl h-32 md:h-40">
+                <!-- Linee del pentagramma -->
+                <div class="absolute w-full h-0.5 bg-slate-800 left-0 top-[0%]"></div>
+                <div class="absolute w-full h-0.5 bg-slate-800 left-0 top-[25%]"></div>
+                <div class="absolute w-full h-0.5 bg-slate-800 left-0 top-[50%]"></div>
+                <div class="absolute w-full h-0.5 bg-slate-800 left-0 top-[75%]"></div>
+                <div class="absolute w-full h-0.5 bg-slate-800 left-0 top-[100%]"></div>
+                
+                <!-- Chiave di Violino -->
+                <div class="absolute left-1 sm:left-4 -top-8 text-[120px] md:text-[150px] text-slate-800 select-none">𝄞</div>
+                
+                <!-- Nota da indovinare -->
+                <div id="current-note" class="absolute w-8 h-5 md:w-10 md:h-6 bg-slate-800 rounded-full" style="opacity: 0;"></div>
+                
+                <!-- Tagli addizionali (Ledger Lines) -->
+                <div id="ledger-line-container"></div>
             </div>
         </div>
 
-        <div class="note-buttons">
+        <!-- Pulsanti delle Note -->
+        <div class="flex justify-center gap-2 sm:gap-4 flex-wrap mb-4">
             <button class="note-btn" data-note="DO">DO</button>
             <button class="note-btn" data-note="RE">RE</button>
             <button class="note-btn" data-note="MI">MI</button>
@@ -253,109 +78,155 @@
             <button class="note-btn" data-note="SI">SI</button>
         </div>
 
-        <div id="feedback" class="feedback"></div>
+        <!-- Feedback -->
+        <div id="feedback" class="text-center text-xl sm:text-2xl font-bold min-h-[60px] flex items-center justify-center rounded-xl p-3 transition-all duration-300 text-slate-700">
+            Indovina la nota sul pentagramma!
+        </div>
     </div>
 
     <script>
         class MusicNoteTrainer {
             constructor() {
+                // Le note sono definite con un valore "step" relativo al pentagramma.
+                // 0 = MI (linea più in basso), 1 = FA, 2 = SOL, ecc.
+                // Questo permette il posizionamento responsivo.
                 this.notes = [
-                    { name: 'DO', position: 150 },
-                    { name: 'RE', position: 144 },
-                    { name: 'MI', position: 133 },
-                    { name: 'FA', position: 116 },
-                    { name: 'SOL', position: 101 },
-                    { name: 'LA', position: 86 },
-                    { name: 'SI', position: 72 },
-                    { name: 'DO', position: 56 },
-                    { name: 'RE', position: 40 },
-                    { name: 'MI', position: 26 },
-                    { name: 'FA', position: 13 },
-                    { name: 'SOL', position: -3 },
-                    { name: 'LA', position: -12 }
+                    { name: 'DO', step: -2 },  // C4 (Do centrale)
+                    { name: 'RE', step: -1 },  // D4
+                    { name: 'MI', step: 0 },   // E4
+                    { name: 'FA', step: 1 },   // F4
+                    { name: 'SOL', step: 2 },  // G4
+                    { name: 'LA', step: 3 },   // A4
+                    { name: 'SI', step: 4 },   // B4
+                    { name: 'DO', step: 5 },   // C5
+                    { name: 'RE', step: 6 },   // D5
+                    { name: 'MI', step: 7 },   // E5
+                    { name: 'FA', step: 8 },   // F5
+                    { name: 'SOL', step: 9 },  // G5
+                    { name: 'LA', step: 10 }   // A5
                 ];
+
                 this.currentNote = null;
                 this.previousNote = null;
                 this.correctCount = 0;
                 this.incorrectCount = 0;
-                this.answered = false;
+                this.isAnswered = false;
+
+                this.dom = {
+                    staff: document.getElementById('staff'),
+                    noteElement: document.getElementById('current-note'),
+                    ledgerLineContainer: document.getElementById('ledger-line-container'),
+                    feedback: document.getElementById('feedback'),
+                    correctCount: document.getElementById('correct-count'),
+                    incorrectCount: document.getElementById('incorrect-count'),
+                    noteButtons: document.querySelectorAll('.note-btn')
+                };
+
                 this.init();
-                this.generateNewNote();
             }
 
             init() {
-                document.querySelectorAll('.note-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        if (!this.answered) {
-                            this.checkAnswer(e.target.dataset.note);
-                        }
-                    });
+                this.dom.noteButtons.forEach(btn => {
+                    // Aggiungo la logica per lo stile dei pulsanti
+                    btn.classList.add('bg-blue-500', 'hover:bg-blue-600', 'text-white', 'font-bold', 'py-3', 'px-4', 'sm:py-4', 'sm:px-6', 'rounded-xl', 'shadow-lg', 'transition-transform', 'transform', 'hover:scale-105', 'active:scale-100', 'min-w-[65px]', 'sm:min-w-[80px]', 'text-lg', 'sm:text-xl');
+                    btn.addEventListener('click', () => this.checkAnswer(btn.dataset.note));
                 });
+
+                // Gestisce il ridimensionamento della finestra per ricalcolare la posizione della nota
+                window.addEventListener('resize', () => {
+                    if (this.currentNote) {
+                        this.showNote(this.currentNote);
+                    }
+                });
+
+                this.generateNewNote();
             }
 
             showNote(note) {
-                const noteElement = document.getElementById('current-note');
-                const ledgerLineBelow = document.getElementById('ledger-line-below');
-                const ledgerLineAbove = document.getElementById('ledger-line-above');
-                ledgerLineBelow.classList.add('hidden');
-                ledgerLineAbove.classList.add('hidden');
-                noteElement.style.top = note.position + 'px';
-                if (note.position === 150) {
-                    ledgerLineBelow.style.top = (150 + 9) + 'px';
-                    ledgerLineBelow.classList.remove('hidden');
+                const staffHeight = this.dom.staff.clientHeight;
+                const noteHeight = this.dom.noteElement.offsetHeight;
+                const stepHeight = staffHeight / 8; // Il pentagramma ha 4 spazi, quindi 8 "mezzi spazi" o "step"
+
+                // Calcolo la posizione verticale della nota in modo dinamico
+                // La posizione 'top' è calcolata dall'alto del pentagramma (nota più alta)
+                const topPosition = staffHeight - (note.step * stepHeight) - (noteHeight / 2);
+
+                this.dom.noteElement.style.top = `${topPosition}px`;
+                this.dom.noteElement.style.left = `50%`; // Centra la nota orizzontalmente
+                this.dom.noteElement.style.opacity = '1';
+
+                this.dom.noteElement.classList.remove('note-appear-animation');
+                void this.dom.noteElement.offsetWidth; // Trucco per far ripartire l'animazione
+                this.dom.noteElement.classList.add('note-appear-animation');
+
+                // Gestisce i tagli addizionali (ledger lines)
+                this.dom.ledgerLineContainer.innerHTML = ''; // Pulisce i tagli precedenti
+                if (note.step <= -2) { // Do centrale o più in basso
+                    this.addLedgerLine(staffHeight - (-2 * stepHeight));
                 }
-                if (note.position === -12) {
-                    ledgerLineAbove.style.top = (-12 + 9) + 'px';
-                    ledgerLineAbove.classList.remove('hidden');
+                if (note.step >= 10) { // La o più in alto
+                    this.addLedgerLine(staffHeight - (10 * stepHeight));
                 }
+            }
+            
+            addLedgerLine(topPosition) {
+                const line = document.createElement('div');
+                line.className = 'absolute h-0.5 bg-slate-800';
+                line.style.width = '50px'; // Larghezza del taglio
+                line.style.left = 'calc(50% - 2px)'; // Centra il taglio con la nota
+                line.style.transform = 'translateX(-50%)';
+                line.style.top = `${topPosition}px`;
+                this.dom.ledgerLineContainer.appendChild(line);
             }
 
             generateNewNote() {
-                this.answered = false;
-                document.getElementById('feedback').textContent = '';
-                document.getElementById('feedback').className = 'feedback';
+                this.isAnswered = false;
+                this.dom.feedback.textContent = 'Indovina la nota!';
+                this.dom.feedback.className = 'feedback text-center text-xl sm:text-2xl font-bold min-h-[60px] flex items-center justify-center rounded-xl p-3 transition-all duration-300 text-slate-700';
 
                 let newNote;
                 do {
                     const randomIndex = Math.floor(Math.random() * this.notes.length);
                     newNote = this.notes[randomIndex];
-                } while (this.previousNote && newNote.name === this.previousNote.name && newNote.position === this.previousNote.position);
+                } while (this.previousNote && newNote.name === this.previousNote.name && newNote.step === this.previousNote.step);
 
                 this.currentNote = newNote;
                 this.previousNote = newNote;
                 this.showNote(this.currentNote);
-                document.querySelectorAll('.note-btn').forEach(btn => {
+
+                this.dom.noteButtons.forEach(btn => {
                     btn.disabled = false;
-                    btn.style.opacity = '1';
+                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
                 });
             }
 
             checkAnswer(selectedNote) {
-                if (this.answered) return;
-                this.answered = true;
-                const feedback = document.getElementById('feedback');
-                document.querySelectorAll('.note-btn').forEach(btn => {
+                if (this.isAnswered) return;
+                this.isAnswered = true;
+                
+                this.dom.noteButtons.forEach(btn => {
                     btn.disabled = true;
-                    btn.style.opacity = '0.6';
+                    btn.classList.add('opacity-50', 'cursor-not-allowed');
                 });
+
                 if (selectedNote === this.currentNote.name) {
                     this.correctCount++;
-                    document.getElementById('correct-count').textContent = this.correctCount;
-                    feedback.textContent = `🎉 Corretto! È ${this.currentNote.name}`;
-                    feedback.className = 'feedback correct';
+                    this.dom.correctCount.textContent = this.correctCount;
+                    this.dom.feedback.textContent = `🎉 Corretto! È un ${this.currentNote.name}`;
+                    this.dom.feedback.className += ' bg-green-200 text-green-800 correct-animation';
                 } else {
                     this.incorrectCount++;
-                    document.getElementById('incorrect-count').textContent = this.incorrectCount;
-                    feedback.textContent = `❌ Sbagliato! Era ${this.currentNote.name}`;
-                    feedback.className = 'feedback incorrect';
+                    this.dom.incorrectCount.textContent = this.incorrectCount;
+                    this.dom.feedback.textContent = `❌ Sbagliato! Era un ${this.currentNote.name}`;
+                    this.dom.feedback.className += ' bg-red-200 text-red-800 incorrect-animation';
                 }
-                setTimeout(() => {
-                    this.generateNewNote();
-                }, 2000);
+                
+                setTimeout(() => this.generateNewNote(), 2000);
             }
         }
+
         document.addEventListener('DOMContentLoaded', () => {
-            window.musicTrainer = new MusicNoteTrainer();
+            new MusicNoteTrainer();
         });
     </script>
 </body>
